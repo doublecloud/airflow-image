@@ -1,0 +1,77 @@
+name: Manual build and publish of Airflow image
+run-name: Build and publish of Airflow image by @${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag of base Airflow image
+        required: true
+        type: string
+      changelogNew:
+        description: JSON list of markdown strings for New section of changelog
+        required: true
+        type: string
+        default: '[]'
+      changelogFixes:
+        description: JSON list of markdown strings for Fixes section of changelog
+        required: true
+        type: string
+        default: '[]'
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: doublecloud/airflow
+permissions: {}
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Update build version
+        run: |
+          VER_PATH=versions/${{ github.event.inputs.version }}/VERSION
+          if [[ ! -e $VER_PATH ]]; then
+            echo 0 > $VER_PATH
+          fi
+          VER=$(($(cat $VER_PATH)+1))
+          echo "BUILD_VERSION=$VER" >> $GITHUB_ENV
+          echo $VER > $VER_PATH
+      - name: Update changelog
+        run: python versions/update_changelog.py --af-version ${{ github.event.inputs.version }} --build-version ${{ env.BUILD_VERSION }} --changelog-new '${{ github.event.inputs.changelogNew }}' --changelog-fixes '${{ github.event.inputs.changelogFixes }}'
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}},value=v${{ github.event.inputs.version }}
+            type=semver,pattern={{version}},value=v${{ github.event.inputs.version }}-${{ env.BUILD_VERSION }}
+      - name: Build and push image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            AIRFLOW_TAG=${{ github.event.inputs.version }}
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "<>"
+          git add -A
+          git commit -m"Changelog for ${{ github.event.inputs.version }}-${{ env.BUILD_VERSION }}"
+          git push

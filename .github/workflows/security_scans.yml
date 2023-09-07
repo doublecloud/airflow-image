@@ -1,0 +1,25 @@
+name: DC security scans
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  iac_security_scan:
+    uses: doublecloud/security_workflows/.github/workflows/tf_security.yml@main
+    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
+
+  dependency_vulnerability_scan:
+    uses: doublecloud/security_workflows/.github/workflows/dependency_scan.yml@main
+    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
