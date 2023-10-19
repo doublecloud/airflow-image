@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version tag of base Airflow image
+        description: Version of base Airflow image
         required: true
         type: string
       changelogNew:
@@ -46,28 +46,36 @@ jobs:
       - name: Update changelog
         run: python versions/update_changelog.py --af-version ${{ github.event.inputs.version }} --build-version ${{ env.BUILD_VERSION }} --changelog-new '${{ github.event.inputs.changelogNew }}' --changelog-fixes '${{ github.event.inputs.changelogFixes }}'
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # @v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure image metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # @v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}},value=v${{ github.event.inputs.version }}
             type=semver,pattern={{version}},value=v${{ github.event.inputs.version }}-${{ env.BUILD_VERSION }}
+      - name: Get python version from requirements.txt
+        run: |
+          PY_VER=$(grep python_version versions/${{ github.event.inputs.version }}/requirements.txt | cut -d '=' -f 2)
+          if [ -z $PY_VER ]; then
+            echo "Please specify python version in this image requirements.txt in format # python_version=VER"
+            exit 1
+          fi
+          echo "AIRFLOW_TAG=${{ github.event.inputs.version }}-python${PY_VER}" >> $GITHUB_ENV
       - name: Build and push image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # @v5
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            AIRFLOW_TAG=${{ github.event.inputs.version }}
+            AIRFLOW_TAG=${{ env.AIRFLOW_TAG }}
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions"
