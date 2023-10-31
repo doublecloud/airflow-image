@@ -1,4 +1,4 @@
-name: DC security scans
+name: Wiz-cli Security Scans
 
 on:
   push:
@@ -10,15 +10,19 @@ on:
       - "*"
 
 jobs:
-  iac_security_scan:
+  iac_scan:
     uses: doublecloud/security_workflows/.github/workflows/tf_security.yml@main
+    with: 
+      wiz_project_id: ${{ vars.WIZ_PROJECT_ID }}
     secrets: inherit
     permissions:
       contents: read
       pull-requests: write
 
-  dependency_vulnerability_scan:
+  sca_scan:
     uses: doublecloud/security_workflows/.github/workflows/dependency_scan.yml@main
+    with: 
+      wiz_project_id: ${{ vars.WIZ_PROJECT_ID }}
     secrets: inherit
     permissions:
       contents: read
