@@ -26,5 +26,5 @@ apache-airflow-providers-sqlite==3.7.0
 apache-airflow-providers-ssh==3.10.0
 astro-sdk-python==1.8.0
 astronomer-cosmos==1.3.2
-astronomer-providers[all]==1.18.4
+astronomer-providers[amazon,apache.hive,apache.livy,cncf.kubernetes,databricks,dbt.cloud,google,http,microsoft.azure,sftp,snowflake]==1.18.4
 requests==2.31.0
