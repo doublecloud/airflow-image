@@ -1,5 +1,14 @@
 # Changelog
 
+DoubleCloud Airflow Base Image 2.7.1-3, 20.02.24
+----------------------------------------
+
+### New
+Added python packages:
+- airflow-clickhouse-plugin==1.1.0
+- python-telegram-bot==20.8
+- apache-airflow-providers-telegram==4.3.1
+
 DoubleCloud Airflow Base Image 2.7.1-2, 19.10.23
 ----------------------------------------
 
