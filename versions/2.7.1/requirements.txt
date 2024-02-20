@@ -28,3 +28,7 @@ astronomer-cosmos==1.2.0
 astronomer-providers[all]==1.17.3
 openlineage-airflow==1.1.0
 requests==2.31.0
+# additional providers
+airflow-clickhouse-plugin==1.1.0
+python-telegram-bot==20.8
+apache-airflow-providers-telegram==4.3.1
