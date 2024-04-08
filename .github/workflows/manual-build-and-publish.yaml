@@ -23,7 +23,7 @@ env:
 permissions: {}
 jobs:
   build-and-push-image:
-    runs-on: [self-hosted, doublecloud-ci-runner]
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
