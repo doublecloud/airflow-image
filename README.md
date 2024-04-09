@@ -2,7 +2,7 @@
 
 ## Container images
 
-Runtime container images used for DoubleCloud Airflow clusters are available at the [GitHub Container registry](https://github.com/doublecloud/airflow-image/pkgs/container/airflow).
+Runtime container images used for DoubleCloud Airflow clusters are available in the [GitHub Container registry](https://github.com/doublecloud/airflow-image/pkgs/container/airflow).
 
 Each published image has two tags:
 
