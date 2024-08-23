@@ -6,6 +6,12 @@ DoubleCloud Airflow Base Image 2.9.0-3, 23.08.24
 ### Fixed
 Do not downgrade celery, sql, elasticserach, http, openlineage, snowflake, sqlite and ssh providers
 
+DoubleCloud Airflow Base Image 2.9.0-2, 23.08.24
+----------------------------------------
+
+### New
+Added airflow-clickhouse-plugin package
+
 DoubleCloud Airflow Base Image 2.9.0-1, 09.04.24
 ----------------------------------------
 
