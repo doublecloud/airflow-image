@@ -1,5 +1,11 @@
 # Changelog
 
+DoubleCloud Airflow Base Image 2.10.0-2, 23.08.24
+----------------------------------------
+
+### New
+Added airflow-clickhouse-plugin package
+
 DoubleCloud Airflow Base Image 2.10.0-1, 21.08.24
 ----------------------------------------
 
