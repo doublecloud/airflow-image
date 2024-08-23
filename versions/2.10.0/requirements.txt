@@ -24,6 +24,7 @@ apache-airflow-providers-sftp==4.10.3
 apache-airflow-providers-snowflake==5.6.1
 apache-airflow-providers-sqlite==3.8.2
 apache-airflow-providers-ssh==3.12.0
+airflow-clickhouse-plugin==1.4.0
 astro-sdk-python==1.8.1
 astronomer-cosmos==1.6.0
 astronomer-providers[amazon,apache.hive,apache.livy,cncf.kubernetes,databricks,dbt.cloud,google,http,microsoft.azure,sftp,snowflake]==1.19.0
