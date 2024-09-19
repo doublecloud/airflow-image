@@ -1,6 +1,7 @@
 # python_version=3.12
 # apache-airflow version MUST be equal to airflow version
 apache-airflow[async,azure,amazon,elasticsearch,google,password,cncf.kubernetes,mysql,postgres,redis,slack,ssh,statsd,virtualenv]==2.10.0
+doublecloud==0.14.0
 apache-airflow-providers-amazon==8.27.0
 apache-airflow-providers-apache-hive==8.1.2
 apache-airflow-providers-apache-livy==3.8.1

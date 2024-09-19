@@ -1,5 +1,11 @@
 # Changelog
 
+DoubleCloud Airflow Base Image 2.9.0-4, 19.09.24
+----------------------------------------
+
+### New
+Added DoubleCloud SDK
+
 DoubleCloud Airflow Base Image 2.9.0-3, 23.08.24
 ----------------------------------------
 
